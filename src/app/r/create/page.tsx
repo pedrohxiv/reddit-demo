@@ -9,13 +9,13 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { CreateSubredditPayload } from "@/lib/validators/subreddit";
 import { useToast } from "@/hooks/use-toast";
-import { UseCustomToast } from "@/hooks/use-custom-toast";
+import { useCustomToast } from "@/hooks/use-custom-toast";
 
 const CreatePage = () => {
   const [input, setInput] = useState<string>("");
   const router = useRouter();
   const { toast } = useToast();
-  const { loginToast } = UseCustomToast();
+  const { loginToast } = useCustomToast();
 
   const { mutate: createCommunity, isLoading } = useMutation({
     mutationFn: async () => {
