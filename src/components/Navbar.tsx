@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Icons } from "@/components/Icons";
 import { UserAccountNav } from "@/components/UserAccountNav";
 import { getAuthSession } from "@/lib/auth";
+import { SearchBar } from "@/components/SearchBar";
 
 export const Navbar = async () => {
   const session = await getAuthSession();
@@ -17,6 +18,7 @@ export const Navbar = async () => {
             Reddit
           </p>
         </Link>
+        <SearchBar />
         {session?.user ? (
           <UserAccountNav user={session.user} />
         ) : (

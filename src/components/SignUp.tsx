@@ -1,9 +1,15 @@
+"use client";
+
 import Link from "next/link";
 
 import { Icons } from "@/components/Icons";
 import { UserAuthForm } from "@/components/UserAuthForm";
 
-export const SignUp = () => {
+interface SignUpProps {
+  isModal?: boolean;
+}
+
+export const SignUp = ({ isModal }: SignUpProps) => {
   return (
     <div className="container mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]">
       <div className="flex flex-col space-y-2 text-center">
@@ -19,6 +25,7 @@ export const SignUp = () => {
           <Link
             href="/sign-in"
             className="hover:text-zinc-800 text-sm underline underline-offset-4"
+            replace={isModal}
           >
             Sign In
           </Link>

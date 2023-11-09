@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useIntersection } from "@mantine/hooks";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
@@ -43,6 +43,12 @@ export const PostFeed = ({ initialPosts, subredditName }: PostFeedProps) => {
     }
   );
 
+  useEffect(() => {
+    if (entry?.isIntersecting) {
+      fetchNextPage();
+    }
+  }, [entry, fetchNextPage]);
+
   const posts = data?.pages.flatMap((page) => page) ?? initialPosts;
 
   return (
@@ -69,6 +75,8 @@ export const PostFeed = ({ initialPosts, subredditName }: PostFeedProps) => {
                 commentAmount={post.comments.length}
                 post={post}
                 subredditName={post.subreddit.name}
+                currentVote={currentVote}
+                votesAmount={votesAmount}
               />
             </li>
           );
@@ -78,6 +86,8 @@ export const PostFeed = ({ initialPosts, subredditName }: PostFeedProps) => {
               commentAmount={post.comments.length}
               post={post}
               subredditName={post.subreddit.name}
+              currentVote={currentVote}
+              votesAmount={votesAmount}
             />
           );
         }

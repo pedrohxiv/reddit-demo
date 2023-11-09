@@ -10,7 +10,7 @@ const Page = () => {
             <CloseModal />
           </div>
 
-          <SignIn />
+          <SignIn isModal={true} />
         </div>
       </div>
     </div>

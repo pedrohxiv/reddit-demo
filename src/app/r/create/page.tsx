@@ -77,7 +77,7 @@ const CreatePage = () => {
             </p>
             <Input
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => setInput(e.target.value.toLowerCase())}
               className="pl-6"
             />
           </div>
