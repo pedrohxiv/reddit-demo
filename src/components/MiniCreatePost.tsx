@@ -2,11 +2,11 @@
 
 import { Session } from "next-auth";
 import { usePathname, useRouter } from "next/navigation";
-
-import { UserAvatar } from "@/components/UserAvatar";
-import { Input } from "./ui/Input";
-import { Button } from "./ui/Button";
 import { ImageIcon, Link2 } from "lucide-react";
+
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { UserAvatar } from "@/components/UserAvatar";
 
 interface MiniCreatePostProps {
   session: Session | null;
@@ -30,17 +30,23 @@ export const MiniCreatePost = ({ session }: MiniCreatePostProps) => {
         </div>
         <Input
           readOnly
-          onClick={() => router.push(pathname + "/submit")}
+          onClick={() =>
+            router.push(!session?.user ? "sign-in" : pathname + "/submit")
+          }
           placeholder="Create post"
         />
         <Button
-          onClick={() => router.push(pathname + "/submit")}
+          onClick={() =>
+            router.push(!session?.user ? "sign-in" : pathname + "/submit")
+          }
           variant="ghost"
         >
           <ImageIcon className="text-zinc-600" />
         </Button>
         <Button
-          onClick={() => router.push(pathname + "/submit")}
+          onClick={() =>
+            router.push(!session?.user ? "sign-in" : pathname + "/submit")
+          }
           variant="ghost"
         >
           <Link2 className="text-zinc-600" />

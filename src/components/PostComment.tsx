@@ -1,21 +1,22 @@
 "use client";
 
+import axios, { AxiosError } from "axios";
 import { useRef, useState } from "react";
-import { UserAvatar } from "./UserAvatar";
 import { Comment, CommentVote, User } from "@prisma/client";
-import { formatTimeToNow } from "@/lib/utils";
-import { CommentVotes } from "./CommentVotes";
-import { Button } from "./ui/Button";
-import { MessageSquare } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Label } from "./ui/Label";
-import { Textarea } from "./ui/Textarea";
-import { CommentRequest } from "@/lib/validators/comment";
 import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
-import { useToast } from "@/hooks/use-toast";
+import { MessageSquare } from "lucide-react";
+
+import { Button } from "@/components/ui/Button";
+import { CommentVotes } from "@/components/CommentVotes";
+import { Label } from "@/components/ui/Label";
+import { Textarea } from "@/components/ui/Textarea";
+import { UserAvatar } from "@/components/UserAvatar";
 import { useCustomToast } from "@/hooks/use-custom-toast";
+import { useToast } from "@/hooks/use-toast";
+import { CommentRequest } from "@/lib/validators/comment";
+import { formatTimeToNow } from "@/lib/utils";
 
 interface PostCommentProps {
   comment: Comment & { votes: CommentVote[]; author: User };
@@ -104,7 +105,7 @@ export const PostComment = ({
         />
         <Button
           onClick={() => {
-            if (!session) return router.push("/sign-in");
+            if (!session?.user) return router.push("/sign-in");
             setIsReplying(true);
           }}
           variant="ghost"
@@ -140,11 +141,13 @@ export const PostComment = ({
                     disabled={input.length === 0}
                     onClick={() => {
                       if (!input) return;
-                      postComment({
-                        postId,
-                        text: input,
-                        replyToId: comment.replyToId ?? comment.id,
-                      });
+                      !session?.user
+                        ? () => router.push("/sign-in")
+                        : postComment({
+                            postId,
+                            text: input,
+                            replyToId: comment.replyToId ?? comment.id,
+                          });
                     }}
                   >
                     Post

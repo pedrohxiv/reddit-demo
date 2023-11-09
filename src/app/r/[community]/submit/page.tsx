@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 
-import { db } from "@/lib/db";
 import { Button } from "@/components/ui/Button";
 import { Editor } from "@/components/Editor";
+import { db } from "@/lib/db";
 
 interface SubmitPageProps {
   params: {

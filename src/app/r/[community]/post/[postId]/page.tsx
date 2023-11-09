@@ -1,16 +1,16 @@
-import { Post, User, Vote } from "@prisma/client";
-
-import { redis } from "@/lib/redis";
-import { CachedPost } from "@/types/redis";
-import { db } from "@/lib/db";
-import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { Button } from "@/components/ui/Button";
+import { notFound } from "next/navigation";
+import { Post, User, Vote } from "@prisma/client";
 import { ArrowBigDown, ArrowBigUp, Loader2 } from "lucide-react";
+
 import { PostVoteServer } from "@/components/post-vote/PostVoteServer";
-import { formatTimeToNow } from "@/lib/utils";
-import { EditorOutput } from "@/components/EditorOutput";
+import { Button } from "@/components/ui/Button";
 import { CommentsSection } from "@/components/CommentsSection";
+import { EditorOutput } from "@/components/EditorOutput";
+import { db } from "@/lib/db";
+import { redis } from "@/lib/redis";
+import { formatTimeToNow } from "@/lib/utils";
+import { CachedPost } from "@/types/redis";
 
 interface PostPageProps {
   params: {
@@ -75,7 +75,7 @@ const PostPage = async ({ params }: PostPageProps) => {
     <div>
       <div className="h-full flex flex-col sm:flex-row items-center sm:items-start justify-between">
         <Suspense fallback={<PostVoteShell />}>
-          {/* @ts-expect-error */}
+          {/* @ts-ignore */}
           <PostVoteServer postId={post?.id ?? cachedPost.id} getData={data} />
         </Suspense>
         <div className="sm:w-0 w-full flex-1 bg-white p-4 rounded-sm">
@@ -92,7 +92,7 @@ const PostPage = async ({ params }: PostPageProps) => {
               <Loader2 className="h-5 w-5 animate-spin text-zinc-500" />
             }
           >
-            {/* @ts-expect-error */}
+            {/* @ts-ignore */}
             <CommentsSection postId={post?.id ?? cachedPost.id} />
           </Suspense>
         </div>

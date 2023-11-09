@@ -1,7 +1,7 @@
 import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 
 import { SignUp } from "@/components/SignUp";
-import { ChevronLeft } from "lucide-react";
 
 const SignInPage = () => {
   return (

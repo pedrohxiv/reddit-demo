@@ -1,17 +1,19 @@
 "use client";
 
 import axios, { AxiosError } from "axios";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { VoteType } from "@prisma/client";
 import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 import { usePrevious } from "@mantine/hooks";
 import { useMutation } from "@tanstack/react-query";
 
-import { useCustomToast } from "@/hooks/use-custom-toast";
 import { Button } from "@/components/ui/Button";
-import { cn } from "@/lib/utils";
-import { PostVoteRequest } from "@/lib/validators/vote";
+import { useCustomToast } from "@/hooks/use-custom-toast";
 import { useToast } from "@/hooks/use-toast";
+import { PostVoteRequest } from "@/lib/validators/vote";
+import { cn } from "@/lib/utils";
 
 interface PostVoteClientProps {
   postId: string;
@@ -26,8 +28,11 @@ export const PostVoteClient = ({
 }: PostVoteClientProps) => {
   const [votesAmount, setVotesAmount] = useState<number>(initialVoteAmount);
   const [currentVote, setCurrentVote] = useState(initialVote);
-  const previousVote = usePrevious(currentVote);
 
+  const previousVote = usePrevious(currentVote);
+  const router = useRouter();
+
+  const { data: session } = useSession();
   const { loginToast } = useCustomToast();
   const { toast } = useToast();
 
@@ -87,7 +92,9 @@ export const PostVoteClient = ({
   return (
     <div className="flex sm:flex-col gap-4 sm:gap-0 pr-6 sm:w-20 pb-4 sm:pb-0">
       <Button
-        onClick={() => vote("UP")}
+        onClick={
+          !session?.user ? () => router.push("/sign-in") : () => vote("UP")
+        }
         size="sm"
         variant="ghost"
         aria-label="upvote"
@@ -103,7 +110,9 @@ export const PostVoteClient = ({
         {votesAmount}
       </p>
       <Button
-        onClick={() => vote("DOWN")}
+        onClick={
+          !session?.user ? () => router.push("/sign-in") : () => vote("DOWN")
+        }
         size="sm"
         variant="ghost"
         aria-label="downvote"

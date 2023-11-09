@@ -1,14 +1,14 @@
 "use client";
 
+import axios from "axios";
 import { useEffect, useRef } from "react";
+import { useSession } from "next-auth/react";
 import { useIntersection } from "@mantine/hooks";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-import { ExtendedPost } from "@/types/db";
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
-import axios from "axios";
-import { useSession } from "next-auth/react";
-import { Post } from "./Post";
+import { Post } from "@/components/Post";
+import { ExtendedPost } from "@/types/db";
 
 interface PostFeedProps {
   initialPosts: ExtendedPost[];
@@ -24,7 +24,7 @@ export const PostFeed = ({ initialPosts, subredditName }: PostFeedProps) => {
 
   const { data: session } = useSession();
 
-  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+  const { data, fetchNextPage } = useInfiniteQuery(
     ["infinite-query"],
     async ({ pageParam = 1 }) => {
       const query =
@@ -83,6 +83,7 @@ export const PostFeed = ({ initialPosts, subredditName }: PostFeedProps) => {
         } else {
           return (
             <Post
+              key={post.id}
               commentAmount={post.comments.length}
               post={post}
               subredditName={post.subreddit.name}

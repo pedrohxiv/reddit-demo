@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/config";
-import { getAuthSession } from "@/lib/auth";
-import { db } from "@/lib/db";
 import { MiniCreatePost } from "@/components/MiniCreatePost";
 import { PostFeed } from "@/components/PostFeed";
+import { getAuthSession } from "@/lib/auth";
+import { db } from "@/lib/db";
 
 interface CommunityPageProps {
   params: {

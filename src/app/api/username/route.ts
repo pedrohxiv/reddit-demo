@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { CommentValidator } from "@/lib/validators/comment";
+import { UsernameValidator } from "@/lib/validators/username";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 
@@ -13,14 +13,24 @@ export async function PATCH(req: Request) {
     }
 
     const body = await req.json();
-    const { postId, text, replyToId } = CommentValidator.parse(body);
+    const { name } = UsernameValidator.parse(body);
 
-    await db.comment.create({
+    const username = await db.user.findFirst({
+      where: {
+        username: name,
+      },
+    });
+
+    if (username) {
+      return new Response("Username is taken", { status: 409 });
+    }
+
+    await db.user.update({
+      where: {
+        id: session.user.id,
+      },
       data: {
-        text,
-        postId,
-        authorId: session.user.id,
-        replyToId,
+        username: name,
       },
     });
 
@@ -30,7 +40,7 @@ export async function PATCH(req: Request) {
       return new Response(error.message, { status: 422 });
     }
 
-    return new Response("Could not create comment, please try again later", {
+    return new Response("Could not update username, please try again later.", {
       status: 500,
     });
   }

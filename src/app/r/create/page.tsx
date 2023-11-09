@@ -3,17 +3,20 @@
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { CreateSubredditPayload } from "@/lib/validators/subreddit";
 import { useToast } from "@/hooks/use-toast";
 import { useCustomToast } from "@/hooks/use-custom-toast";
+import { CreateSubredditPayload } from "@/lib/validators/subreddit";
 
 const CreatePage = () => {
   const [input, setInput] = useState<string>("");
   const router = useRouter();
+
+  const { data: session } = useSession();
   const { toast } = useToast();
   const { loginToast } = useCustomToast();
 
@@ -89,7 +92,11 @@ const CreatePage = () => {
           <Button
             isLoading={isLoading}
             disabled={input.length === 0}
-            onClick={() => createCommunity()}
+            onClick={
+              !session?.user
+                ? () => router.push("/sign-in")
+                : () => createCommunity()
+            }
           >
             Create Community
           </Button>

@@ -7,11 +7,11 @@ import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 import { usePrevious } from "@mantine/hooks";
 import { useMutation } from "@tanstack/react-query";
 
-import { useCustomToast } from "@/hooks/use-custom-toast";
 import { Button } from "@/components/ui/Button";
-import { cn } from "@/lib/utils";
-import { CommentVoteRequest } from "@/lib/validators/vote";
+import { useCustomToast } from "@/hooks/use-custom-toast";
 import { useToast } from "@/hooks/use-toast";
+import { CommentVoteRequest } from "@/lib/validators/vote";
+import { cn } from "@/lib/utils";
 
 interface CommentVotesProps {
   commentId: string;

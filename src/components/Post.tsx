@@ -1,9 +1,10 @@
-import { formatTimeToNow } from "@/lib/utils";
+import { useRef } from "react";
 import { Post as IPost, User, Vote } from "@prisma/client";
 import { MessageSquare } from "lucide-react";
-import { useRef } from "react";
-import { EditorOutput } from "./EditorOutput";
-import { PostVoteClient } from "./post-vote/PostVoteClient";
+
+import { PostVoteClient } from "@/components/post-vote/PostVoteClient";
+import { EditorOutput } from "@/components/EditorOutput";
+import { formatTimeToNow } from "@/lib/utils";
 
 interface PostProps {
   subredditName: string;
@@ -46,7 +47,7 @@ export const Post = ({
                 <span className="px-1">-</span>
               </>
             ) : null}
-            <span className="">Posted by u/{post.author.name}</span>{" "}
+            <span className="">Posted by u/{post.author.username}</span>{" "}
             {formatTimeToNow(new Date(post.createdAt))}
           </div>
           <a href={`/r/${subredditName}/post/${post.id}`}>

@@ -2,9 +2,9 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/Button";
 import { Icons } from "@/components/Icons";
+import { SearchBar } from "@/components/SearchBar";
 import { UserAccountNav } from "@/components/UserAccountNav";
 import { getAuthSession } from "@/lib/auth";
-import { SearchBar } from "@/components/SearchBar";
 
 export const Navbar = async () => {
   const session = await getAuthSession();

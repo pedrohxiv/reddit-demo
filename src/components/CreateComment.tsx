@@ -1,16 +1,17 @@
 "use client";
 
+import axios, { AxiosError } from "axios";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
 
+import { Button } from "@/components/ui/Button";
 import { Label } from "@/components/ui/Label";
 import { Textarea } from "@/components/ui/Textarea";
-import { Button } from "@/components/ui/Button";
-import { CommentRequest } from "@/lib/validators/comment";
-import axios, { AxiosError } from "axios";
-import { useToast } from "@/hooks/use-toast";
 import { useCustomToast } from "@/hooks/use-custom-toast";
-import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
+import { CommentRequest } from "@/lib/validators/comment";
 
 interface CreateCommentProps {
   postId: string;
@@ -22,6 +23,7 @@ export const CreateComment = ({ postId, replyToId }: CreateCommentProps) => {
 
   const [input, setInput] = useState<string>("");
 
+  const { data: session } = useSession();
   const { toast } = useToast();
   const { loginToast } = useCustomToast();
 
@@ -74,7 +76,11 @@ export const CreateComment = ({ postId, replyToId }: CreateCommentProps) => {
           <Button
             isLoading={isLoading}
             disabled={input.length === 0}
-            onClick={() => comment({ postId, text: input, replyToId })}
+            onClick={
+              !session?.user
+                ? () => router.push("/sign-in")
+                : () => comment({ postId, text: input, replyToId })
+            }
           >
             Post
           </Button>

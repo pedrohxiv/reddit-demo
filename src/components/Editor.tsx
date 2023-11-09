@@ -9,9 +9,9 @@ import { usePathname, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type EditorJS from "@editorjs/editorjs";
 
+import { useToast } from "@/hooks/use-toast";
 import { PostCreationRequest, PostValidator } from "@/lib/validators/post";
 import { uploadFiles } from "@/lib/uploadthing";
-import { useToast } from "@/hooks/use-toast";
 
 interface EditorProps {
   subredditId: string;
@@ -111,7 +111,7 @@ export const Editor = ({ subredditId }: EditorProps) => {
         });
       }
     }
-  }, [errors]);
+  }, [errors, toast]);
 
   useEffect(() => {
     const init = async () => {

@@ -1,9 +1,10 @@
 "use client";
 
 import axios, { AxiosError } from "axios";
-import { useMutation } from "@tanstack/react-query";
 import { startTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useMutation } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/Button";
 import { useCustomToast } from "@/hooks/use-custom-toast";
@@ -22,6 +23,8 @@ export const SubscribeLeaveToggle = ({
   isSubscribed,
 }: SubscribeLeaveToggleProps) => {
   const router = useRouter();
+
+  const { data: session } = useSession();
   const { toast } = useToast();
   const { loginToast } = useCustomToast();
 
@@ -105,7 +108,9 @@ export const SubscribeLeaveToggle = ({
     </Button>
   ) : (
     <Button
-      onClick={() => subscribe()}
+      onClick={
+        !session?.user ? () => router.push("/sign-in") : () => subscribe()
+      }
       isLoading={isSubLoading}
       className="w-full mt-1 mb-4"
     >
