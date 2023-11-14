@@ -120,4 +120,4 @@ O projeto utiliza várias dependências para garantir seu funcionamento suave. A
    yarn dev
    ```
 
-5. Acesse a plataforma em `http://localhost:3000` e comece a explorar e interagir com as postagens e discussões na comunidade Breadit.
+5. Acesse a plataforma em `http://localhost:3000` e comece a explorar e interagir com as postagens e discussões na comunidade Reddit.
